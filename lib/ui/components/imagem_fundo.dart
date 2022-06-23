@@ -2,10 +2,10 @@ import 'package:hackathon/ui/components/components.dart';
 import 'package:flutter/material.dart';
 
 class ImagemFundo {
-  static Widget fundo(String sImagem,
-      {boxFit = BoxFit.fill, double? w, double? h}) {
+  static Widget fundo(
+      {boxFit = BoxFit.fill, required String? sImagem, double? w, double? h}) {
     return Image(
-      image: AssetImage(sImagem),
+      image: AssetImage(sImagem!),
       fit: boxFit,
       height: h,
       width: w,

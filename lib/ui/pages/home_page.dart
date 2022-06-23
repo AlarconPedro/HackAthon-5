@@ -5,7 +5,11 @@ import 'package:hackathon/ui/pages/pages.dart';
 import 'package:hackathon/ui/decoration/decoration.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  // const HomePage({Key? key}) : super(key: key);
+
+  final BarraNavegacao? barraNavegacao;
+
+  const HomePage({Key? key, this.barraNavegacao}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -23,41 +27,56 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Cores.laranja,
       ),
       bottomNavigationBar: BarraNavegacao(),
-      body: Container(
-        color: Cores.cinza,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            _telaHome(),
-          ],
-        ),
-      ),
+      body: widget.barraNavegacao == 0
+          ? Container(
+              color: Cores.cinza,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  _telaHome(),
+                ],
+              ),
+            )
+          : Container(
+              child: _iTabSelecionada == 0
+                  ? _telaHome()
+                  : _iTabSelecionada == 1
+                      ? HistoricoPage()
+                      // ? ListarPage()
+                      : _iTabSelecionada == 2
+                          ? const HistoricoPage()
+                          : const RespostaPage(),
+            ),
     );
   }
 
   Widget _telaHome() {
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            color: Cores.cinza,
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(
-                    child: ImagemFundo.fundo(
-                      "images/logo.png",
-                      h: 300,
-                    ),
+    return Column(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                color: Cores.cinza,
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: ImagemFundo.fundo(
+                          sImagem: "images/logo.png",
+                          h: 300,
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

@@ -20,11 +20,13 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
   late Animation<double> _fadeFabOutAnimation;
   late Animation<double> _fadeFabInAnimation;
 
+  late TabController _tabController;
+
   double fabIconAlpha = 1;
   IconData nextIcon = Icons.list_outlined;
   IconData activeIcon = Icons.list_outlined;
 
-  int currentSelected = 1;
+  int currentSelected = 0;
 
   @override
   void initState() {
@@ -35,6 +37,9 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
     _fadeOutController = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: (ANIM_DURATION ~/ 5)));
+
+    _tabController = TabController(vsync: this, length: 3);
+    _tabController.addListener(_tabControllerSelection);
 
     _positionTween = Tween<double>(begin: 0, end: 0);
     _positionAnimation = _positionTween.animate(
@@ -73,130 +78,74 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
   Widget build(BuildContext context) {
     return Container(
       color: Cores.cinza,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: <Widget>[
-          Container(
-            height: 65,
-            margin: const EdgeInsets.only(top: 45),
-            decoration: BoxDecoration(color: Cores.branco, boxShadow: [
-              BoxShadow(
-                  color: Cores.laranja,
-                  offset: const Offset(0, -1),
-                  blurRadius: 8)
-            ]),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                TabItem(
-                    selected: currentSelected == 0,
-                    iconData: Icons.home,
-                    title: "Home",
-                    callbackFunction: () {
-                      setState(() {
-                        nextIcon = Icons.home;
-                        currentSelected = 0;
-                        _tabControllerSelection();
-                      });
-                      _initAnimationAndStart(_positionAnimation.value, -1);
-                    }),
-                TabItem(
-                    selected: currentSelected == 1,
-                    iconData: Icons.list_outlined,
-                    title: "Lista",
-                    callbackFunction: () {
-                      setState(() {
-                        nextIcon = Icons.list_outlined;
-                        currentSelected = 1;
-                        _tabControllerSelection();
-                      });
-                      _initAnimationAndStart(_positionAnimation.value, 0);
-                    }),
-                TabItem(
-                    selected: currentSelected == 2,
-                    iconData: Icons.history_outlined,
-                    title: "Histórico",
-                    callbackFunction: () {
-                      setState(() {
-                        nextIcon = Icons.history_outlined;
-                        currentSelected = 2;
-                        _tabControllerSelection();
-                      });
-                      _initAnimationAndStart(_positionAnimation.value, 1);
-                    })
-              ],
-            ),
-          ),
-          IgnorePointer(
-            child: Container(
-              decoration: BoxDecoration(color: Cores.transparente),
-              child: Align(
-                heightFactor: 1,
-                alignment: Alignment(_positionAnimation.value, 0),
-                child: FractionallySizedBox(
-                  widthFactor: 1 / 3,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 90,
-                        width: 90,
-                        child: ClipRect(
-                            clipper: HalfClipper(),
-                            child: Container(
-                              child: Center(
-                                child: Container(
-                                    width: 70,
-                                    height: 70,
-                                    decoration: BoxDecoration(
-                                        color: Cores.cinza,
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Cores.laranja,
-                                              blurRadius: 8)
-                                        ])),
-                              ),
-                            )),
-                      ),
-                      SizedBox(
-                          height: 70,
-                          width: 90,
-                          child: CustomPaint(
-                            painter: HalfPainter(),
-                          )),
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Cores.laranja,
-                              border: Border.all(
-                                  color: Cores.cinza,
-                                  width: 5,
-                                  style: BorderStyle.none)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Opacity(
-                              opacity: fabIconAlpha,
-                              child: Icon(
-                                activeIcon,
-                                color: Cores.branco,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
+      child: navBar(),
+    );
+  }
+
+  Widget tabItens() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <TabItem>[
+        TabItem(
+          selected: currentSelected == 0,
+          iconData: Icons.home,
+          title: "Home",
+          controller: _tabController,
+          callbackFunction: () {
+            setState(
+              () {
+                nextIcon = Icons.home;
+                currentSelected = 0;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HistoricoPage(),
                   ),
+                );
+              },
+            );
+            _initAnimationAndStart(_positionAnimation.value, -1);
+          },
+        ),
+        TabItem(
+            selected: currentSelected == 1,
+            iconData: Icons.list_outlined,
+            title: "Lista",
+            controller: _tabController,
+            callbackFunction: () {
+              setState(() {
+                nextIcon = Icons.list_outlined;
+                currentSelected = 1;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HistoricoPage(),
+                  ),
+                );
+              });
+              _initAnimationAndStart(_positionAnimation.value, 0);
+            }),
+        TabItem(
+          selected: currentSelected == 2,
+          iconData: Icons.history_outlined,
+          title: "Histórico",
+          controller: _tabController,
+          callbackFunction: () {
+            setState(() {
+              nextIcon = Icons.history_outlined;
+              currentSelected = 2;
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HistoricoPage(),
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
+              );
+            });
+            _initAnimationAndStart(_positionAnimation.value, 1);
+          },
+        ),
+      ],
     );
   }
 
@@ -210,25 +159,113 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
     _fadeOutController.forward();
   }
 
-  void _tabControllerSelection() {
+  int _tabControllerSelection() {
     if (currentSelected == 0) {
       // _iTabSelecionada = _tabController.index;
       setState(() {
-        HomePage();
+        navBar();
       });
     }
     if (currentSelected == 1) {
       // _iTabSelecionada = _tabController.index;
       setState(() {
-        ListarPage();
+        navBar();
       });
     }
     if (currentSelected == 2) {
       // _iTabSelecionada = _tabController.index;
       setState(() {
-        HistoricoPage();
+        navBar();
       });
     }
+    return currentSelected;
+  }
+
+  Widget navBar() {
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: <Widget>[
+        Container(
+          height: 65,
+          margin: const EdgeInsets.only(top: 45),
+          decoration: BoxDecoration(color: Cores.branco, boxShadow: [
+            BoxShadow(
+                color: Cores.laranja,
+                offset: const Offset(0, -1),
+                blurRadius: 8)
+          ]),
+          child: tabItens(),
+        ),
+        IgnorePointer(
+          child: Container(
+            decoration: BoxDecoration(color: Cores.transparente),
+            child: Align(
+              heightFactor: 1,
+              alignment: Alignment(_positionAnimation.value, 0),
+              child: FractionallySizedBox(
+                widthFactor: 1 / 3,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 90,
+                      width: 90,
+                      child: ClipRect(
+                        clipper: HalfClipper(),
+                        child: Container(
+                          child: Center(
+                            child: Container(
+                              width: 70,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                color: Cores.cinza,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(color: Cores.laranja, blurRadius: 8)
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                        height: 70,
+                        width: 90,
+                        child: CustomPaint(
+                          painter: HalfPainter(),
+                        )),
+                    SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Cores.laranja,
+                            border: Border.all(
+                                color: Cores.cinza,
+                                width: 5,
+                                style: BorderStyle.none)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Opacity(
+                            opacity: fabIconAlpha,
+                            child: Icon(
+                              activeIcon,
+                              color: Cores.branco,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

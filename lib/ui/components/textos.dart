@@ -12,4 +12,14 @@ class Textos {
       ),
     );
   }
+
+  static Text textoLogin() {
+    return const Text(
+      "Login",
+      style: TextStyle(
+        fontSize: 35,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
 }

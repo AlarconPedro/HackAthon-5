@@ -3,16 +3,18 @@ import 'package:hackathon/ui/decoration/decoration.dart';
 
 class TabItem extends StatefulWidget {
   TabItem({
+    required this.controller,
     required this.selected,
     required this.iconData,
     required this.title,
     required this.callbackFunction,
   });
 
-  String title;
-  IconData iconData;
+  String? title;
+  IconData? iconData;
   bool selected;
   Function callbackFunction;
+  TabController? controller;
 
   @override
   _TabItemState createState() => _TabItemState();
@@ -67,7 +69,7 @@ class _TabItemState extends State<TabItem> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    widget.title,
+                    widget.title!,
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                 )),

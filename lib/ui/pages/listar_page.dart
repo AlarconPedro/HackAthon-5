@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon/datasources/models/models.dart';
 import 'package:hackathon/ui/components/components.dart';
 import 'package:hackathon/ui/decoration/decoration.dart';
+import 'package:hackathon/ui/pages/pages.dart';
 
 class ListarPage extends StatefulWidget {
-  const ListarPage({Key? key}) : super(key: key);
+  final List<Login> listaDados;
+
+  const ListarPage(this.listaDados, {Key? key}) : super(key: key);
 
   @override
   State<ListarPage> createState() => _ListarPageState();
@@ -12,31 +16,67 @@ class ListarPage extends StatefulWidget {
 class _ListarPageState extends State<ListarPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Cores.cinza,
-      child: Expanded(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              color: Cores.cinza,
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: ImagemFundo.fundo(
-                        "images/facebook_icon_hover.png",
-                        h: 300,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Textos.textoAppBar(),
+        centerTitle: true,
+        backgroundColor: Cores.laranja,
+      ),
+      body: Container(
+        color: Cores.cinza,
+        child: SizedBox(
+          child: ListView(
+            padding: const EdgeInsets.all(8),
+            children: [
+              itensList(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget itensList() {
+    // int qtd_itens = 10;
+    List<Widget> list = [];
+    return ListView.builder(
+        padding: const EdgeInsets.all(8),
+        scrollDirection: Axis.vertical,
+        itemCount: widget.listaDados.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Cores.laranja,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ListTile(
+                  leading: const Icon(Icons.home),
+                  title: Text(
+                    widget.listaDados[index].email,
+                  ),
+                  // title: const Text("Home"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RespostaPage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        });
+    // for (var i = 0; i < widget.listaDados.length; i++) {}
+    // return Container(
+    //   child: Column(
+    //     children: list,
+    //   ),
+    // );
   }
 }
