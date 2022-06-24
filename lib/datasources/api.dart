@@ -9,31 +9,39 @@ class ApiRemote {
   final _linkListar = "http://187.87.223.235:8000/api/v1/pessoas";
   final _request = HttpRequest();
 
-  String email;
-  String password;
+  String? email;
+  String? password;
+  String? token;
 
-  ApiRemote({required this.email, required this.password});
+  ApiRemote({this.email, this.password, this.token});
 
-  // Future<List<Login>> post() async {
-  //   final _linkLogin =
-  //       "http://187.87.223.235:8000/api/login${email}/${password}";
-  //   final responsePost = await _request.postJson(link: _linkLogin);
-  //   return jsonDecode(responsePost);
-  // }
-
-  Future<http.Response> post() async {
-    final _linkLogin = "http://187.87.223.235:8000/api/login";
+  Future<http.Response> loginPost() async {
+    final _linkLogin = Globais.linkGetLogin;
     // final responsePost = await _request.postJson(link: _linkLogin);
     return http.post(
-      Uri.parse('http://187.87.223.235:8000/api/login'),
+      Uri.parse(_linkLogin),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'email': email,
-        'password': password,
+        'email': email!,
+        'password': password!,
       }),
     );
+  }
+
+  Future<http.Response> listarGet() async {
+    final _linkListar = Globais.linkGetListar;
+
+    final content = await http.get(
+      Uri.parse(_linkListar),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Autorization': 'bearer ${token}',
+      },
+    );
+    print(content);
+    return content;
   }
 
   Future<List<Login>> get() async {
@@ -45,21 +53,4 @@ class ApiRemote {
     List<Login> lista = [];
     return lista = listaDados.map((e) => Login.fromJson(e)).toList();
   }
-
-  /// Fazer validação de campo login e criar tela de login no app ///////////////////////////////////////////////////////////////////////////////
-  /// // for (var i = 0; i < listaDados.length; i++) {
-  //   lista.add(Login.fromJson(listaDados[i]));
-  // }
-  // return [
-  //   Login(
-  //     id: listaDados[0]["id"].toString().toInt(),
-  //     usuario: listaDados[0]["usuario"],
-  //     senha: listaDados[0]["senha"],
-  //   ),
-  //   Login(
-  //     id: listaDados[1]["id"].toString().toInt(),
-  //     usuario: listaDados[1]["usuario"],
-  //     senha: listaDados[1]["senha"],
-  //   ),
-  // ];
 }

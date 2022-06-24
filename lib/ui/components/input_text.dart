@@ -1,26 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon/ui/decoration/decoration.dart';
 
-class InputText extends StatelessWidget {
-  String texto;
-
-  InputText({Key? key, required this.texto}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
+class InputText {
+  static Widget campoUsuario(TextEditingController usuarioController) {
+    return Container(
+      margin: const EdgeInsets.only(left: 16, right: 32),
       child: TextField(
-        decoration: InputDecoration(
-          border: const OutlineInputBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(8.0),
-            ),
-          ),
-          labelText: texto,
-          labelStyle: TextStyle(
-            color: Cores.azul,
-          ),
+        controller: usuarioController,
+        decoration: const InputDecoration(
+          hintStyle: TextStyle(fontSize: 20),
+          border: InputBorder.none,
+          icon: Icon(Icons.account_circle_rounded),
+          hintText: "Usuário",
+        ),
+      ),
+    );
+  }
+
+  static Widget campoSenha(TextEditingController senhaController) {
+    return Container(
+      margin: const EdgeInsets.only(left: 16, right: 32),
+      child: TextField(
+        controller: senhaController,
+        obscureText: true,
+        decoration: const InputDecoration(
+          hintStyle: TextStyle(fontSize: 22),
+          border: InputBorder.none,
+          icon: Icon(Icons.vpn_key),
+          hintText: "********",
         ),
       ),
     );

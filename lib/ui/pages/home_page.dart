@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
               child: _iTabSelecionada == 0
                   ? _telaHome()
                   : _iTabSelecionada == 1
-                      ? HistoricoPage()
+                      ? ListarPage()
                       // ? ListarPage()
                       : _iTabSelecionada == 2
                           ? const HistoricoPage()
@@ -51,32 +51,34 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _telaHome() {
-    return Column(
-      children: [
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                color: Cores.cinza,
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: ImagemFundo.fundo(
-                          sImagem: "images/logo.png",
-                          h: 300,
+    return Container(
+      child: Column(
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  color: Cores.cinza,
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: ImagemFundo.fundo(
+                            sImagem: "images/logo.png",
+                            h: 300,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
