@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon/classes/classes.dart';
 import 'package:hackathon/ui/components/components.dart';
 import 'package:hackathon/ui/components/textos.dart';
 import 'package:hackathon/ui/pages/pages.dart';
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
           ? Container(
               color: Cores.cinza,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _telaHome(),
                 ],
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
                       ? ListarPage()
                       // ? ListarPage()
                       : _iTabSelecionada == 2
-                          ? const HistoricoPage()
+                          ? const ListarPage()
                           : const RespostaPage(),
             ),
     );
@@ -52,6 +53,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _telaHome() {
     return Container(
+      color: Cores.cinza,
       child: Column(
         children: [
           Expanded(

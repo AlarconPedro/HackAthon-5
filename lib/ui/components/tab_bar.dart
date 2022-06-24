@@ -100,7 +100,7 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HistoricoPage(),
+                    builder: (context) => HomePage(),
                   ),
                 );
               },
@@ -120,7 +120,7 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HistoricoPage(),
+                    builder: (context) => ListarPage(),
                   ),
                 );
               });

@@ -11,7 +11,7 @@ class ApiRemote {
 
   String? email;
   String? password;
-  String? token;
+  String? token = Globais.token;
 
   ApiRemote({this.email, this.password, this.token});
 

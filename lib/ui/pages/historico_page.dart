@@ -19,7 +19,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
         centerTitle: true,
         backgroundColor: Cores.laranja,
       ),
-      bottomNavigationBar: BarraNavegacao(),
+      // bottomNavigationBar: BarraNavegacao(),
       body: Container(
         color: Cores.cinza,
         child: SizedBox(

@@ -67,14 +67,13 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   Future<String> validaLogin(TextEditingController usuario, senha) async {
-    String token = "";
     final loginPage = ApiRemote(email: usuario.text, password: senha.text);
     if (usuario != null || senha != null) {
       final response = await loginPage.loginPost();
       // print(loginPage.post());
       if (response.statusCode == 200) {
-        token = response.body;
-        Globais.token = token;
+        print(response.body);
+        Globais.token = response.body;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => HomePage(),
@@ -83,6 +82,6 @@ class _LoginFormState extends State<LoginForm> {
       }
       return usuario.text = "Erro";
     }
-    return token;
+    return Globais.token;
   }
 }
