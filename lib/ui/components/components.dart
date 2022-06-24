@@ -7,3 +7,4 @@ export 'input_text.dart';
 export 'botoes.dart';
 export 'decoracao.dart';
 export 'alerts.dart';
+export 'circulo_espera.dart';

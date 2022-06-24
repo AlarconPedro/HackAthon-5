@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon/classes/classes.dart';
+import 'package:hackathon/datasources/models/listar.dart';
 import 'package:hackathon/ui/components/components.dart';
 import 'package:hackathon/ui/components/textos.dart';
 import 'package:hackathon/ui/pages/pages.dart';
@@ -17,6 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final List<Listar> listar = [];
   late TabController _tabController;
   int _iTabSelecionada = 0;
   @override
@@ -42,10 +44,12 @@ class _HomePageState extends State<HomePage> {
               child: _iTabSelecionada == 0
                   ? _telaHome()
                   : _iTabSelecionada == 1
-                      ? ListarPage()
+                      ? ListarPage(
+                          listar: [],
+                        )
                       // ? ListarPage()
                       : _iTabSelecionada == 2
-                          ? const ListarPage()
+                          ? HistoricoPage()
                           : const RespostaPage(),
             ),
     );

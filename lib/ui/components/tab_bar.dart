@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon/datasources/models/listar.dart';
 import 'tab_item.dart';
 import 'package:vector_math/vector_math.dart' as vector;
 import 'package:hackathon/ui/components/components.dart';
@@ -83,6 +84,7 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
   }
 
   Widget tabItens() {
+    final List<Listar> listar = [];
     return Row(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -120,7 +122,9 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ListarPage(),
+                    builder: (context) => ListarPage(
+                      listar: [],
+                    ),
                   ),
                 );
               });

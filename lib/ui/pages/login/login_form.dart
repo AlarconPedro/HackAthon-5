@@ -72,11 +72,13 @@ class _LoginFormState extends State<LoginForm> {
       final response = await loginPage.loginPost();
       // print(loginPage.post());
       if (response.statusCode == 200) {
-        print(response.body);
+        // print(response.body);
         Globais.token = response.body;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => ListarPage(
+              listar: [],
+            ),
           ),
         );
       }
