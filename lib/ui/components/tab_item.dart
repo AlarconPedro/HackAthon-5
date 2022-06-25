@@ -3,7 +3,6 @@ import 'package:hackathon/ui/decoration/decoration.dart';
 
 class TabItem extends StatefulWidget {
   TabItem({
-    required this.controller,
     required this.selected,
     required this.iconData,
     required this.title,

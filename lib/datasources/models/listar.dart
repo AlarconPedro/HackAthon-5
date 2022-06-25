@@ -1,13 +1,22 @@
+import 'package:hackathon/classes/classes.dart';
+
 class Listar {
-  String nome;
-  String email;
+  String tema;
+  String descricao;
+  // String id;
 
-  Listar({required this.nome, required this.email});
+  Listar({
+    required this.tema,
+    required this.descricao,
+    // required this.id,
+  });
 
-  factory Listar.fromJson(Map<String, dynamic> json) {
+  factory Listar.fromJson(Map<String, dynamic> mapa) {
     return Listar(
-      nome: json["nome"].toString(),
-      email: json["email"].toString(),
+      tema: mapa["tema"] ?? "",
+      descricao: mapa["descricao"] ?? "",
+      // id: mapa["id"].toInt(),
+      // perguntas: mapa["descricao"].toString(),
     );
   }
 }

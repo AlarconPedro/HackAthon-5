@@ -10,122 +10,94 @@ import 'package:hackathon/ui/decoration/decoration.dart';
 import 'package:hackathon/ui/pages/pages.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
-class ListarPage extends StatefulWidget {
+class ListarPage extends StatelessWidget {
   final List<Listar> listar;
 
-  const ListarPage({required this.listar, Key? key}) : super(key: key);
+  ListarPage(this.listar, {Key? key}) : super(key: key);
 
-  @override
-  State<ListarPage> createState() => _ListarPageState();
-}
-
-class _ListarPageState extends State<ListarPage> {
+  // @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Textos.textoAppBar(),
-        centerTitle: true,
-        backgroundColor: Cores.laranja,
-      ),
-      body: Container(
-        color: Cores.cinza,
-        child: SizedBox(
-          child: ListView(
-            padding: const EdgeInsets.all(8),
-            children: [
-              listarDados(),
-
-              // FutureBuilder(
-              //     future: ApiRemote().listarDadosWeb(),
-              //     builder: (context, snapshot) {
-              //       switch (snapshot.connectionState) {
-              //         case ConnectionState.waiting:
-              //         case ConnectionState.active:
-              //           return listarDados();
-              //         case ConnectionState.none:
-              //           return const CirculoEspera();
-              //         default:
-              //           return listarDados();
-              //         // if (snapshot.hasData) {
-              //         //   return listarDados();
-              //         // }
-              //         // if (snapshot.hasError) {
-              //         //   return Text(
-              //         //       "Erro ao exigir a listagem (${snapshot.error.toString()})");
-              //         // } else {
-              //         //   return listarDados();
-              //         // }
-              //       }
-              //     }),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget listarDados() {
-    return Scrollbar(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: 15,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Cores.laranja,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ListTile(
-                iconColor: Cores.preto,
-                title: Text("widget.listar[index].nome"),
-                subtitle: Text("widget.listar[index].email"),
-                trailing: IconButton(
-                  icon: Icon(Icons.drive_file_rename_outline_sharp),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RespostaPage(),
-                      ),
-                    );
-                  },
-                ),
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder(
+              future: ApiRemote().get(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                  case ConnectionState.none:
+                    return const CirculoEspera();
+                  default:
+                    if (snapshot.hasError) {
+                      return Text(
+                          "Erro ao exigir a listagem (${snapshot.error.toString()})");
+                    } else {
+                      return listarPesquisas(snapshot.data as List<Listar>);
+                    }
+                }
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 
-  Widget listarDados_old() {
+  Widget listarPesquisas(List<Listar> listaDados) {
     return ListView.builder(
       padding: const EdgeInsets.all(8),
       scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: widget.listar.length,
+      itemCount: listaDados.length,
       itemBuilder: (context, index) {
         return GestureDetector(
           child: Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
             child: Container(
-              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Cores.laranja,
                 borderRadius: BorderRadius.circular(10),
+                color: Cores.laranja,
               ),
               child: ListTile(
-                leading: const Icon(Icons.home),
+                iconColor: Cores.preto,
                 title: Text(
-                  widget.listar[index].nome,
-                  // listarDadosWeb().toString(),
+                  listaDados[index].descricao,
                 ),
-                // title: const Text("Home"),
-                onTap: () {
+                subtitle: Text(
+                  listaDados[index].tema,
+                ),
+              ),
+            ),
+          ),
+          onTap: () {},
+        );
+      },
+    );
+  }
+}
+
+Widget listarDados() {
+  return Scrollbar(
+    child: ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: 15,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Cores.laranja,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: ListTile(
+              iconColor: Cores.preto,
+              title: Text("widget.listar[index].nome"),
+              subtitle: Text("widget.listar[index].email"),
+              trailing: IconButton(
+                icon: Icon(Icons.drive_file_rename_outline_sharp),
+                onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -138,28 +110,8 @@ class _ListarPageState extends State<ListarPage> {
           ),
         );
       },
-    );
-  }
-
-  // Future<Map<String, dynamic>> listarDadosWeb() async {
-  //   final content = ApiRemote(token: Globais.token);
-  //   final response = await content.listarGet();
-  //   final Map<String, dynamic> mapa = JwtDecoder.decode(response.body);
-  //   print(mapa);
-  //   return mapa;
-  // }
-
-  // Future<List> fromToken(Map<String, dynamic> mapa) async {
-  //   final mapaToken = await listarDados();
-  //   for (var i; i < mapa.length; i++) {
-  //     mapaToken.map((key, value) => null);
-  //   }
-  // }
-  // String token = Globais.token;
-  // Map<String, dynamic> mapa = JwtDecoder.decode(token);
-  // return toJson(mapa);
-
-  // return mapa = listaDados.map((e) => fromJson(e)) as Map<String, dynamic>;
+    ),
+  );
 }
 
 Future<List<Listar>> listarDadosWeb() async {

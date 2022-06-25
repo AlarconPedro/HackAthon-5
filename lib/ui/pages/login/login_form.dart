@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon/classes/classes.dart';
 import 'package:hackathon/datasources/api.dart';
+import 'package:hackathon/datasources/models/listar.dart';
 import 'package:hackathon/ui/components/components.dart';
 import 'package:hackathon/ui/pages/home_page.dart';
 import 'package:hackathon/ui/pages/listar_page.dart';
@@ -14,6 +15,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final List<Listar> listar = [];
   final usuarioController = TextEditingController();
   final senhaController = TextEditingController();
 
@@ -76,9 +78,7 @@ class _LoginFormState extends State<LoginForm> {
         Globais.token = response.body;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => ListarPage(
-              listar: [],
-            ),
+            builder: (context) => const HomePage(),
           ),
         );
       }

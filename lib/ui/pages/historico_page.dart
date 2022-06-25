@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon/classes/classes.dart';
 import 'package:hackathon/ui/components/components.dart';
 import 'package:hackathon/ui/decoration/decoration.dart';
 import 'package:hackathon/ui/pages/pages.dart';
@@ -36,12 +37,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
                   leading: const Icon(Icons.home),
                   title: const Text("Home"),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    );
+                    Globais.tabSelected = 0;
                   },
                 ),
               ),

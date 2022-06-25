@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon/classes/classes.dart';
 import 'package:hackathon/datasources/models/listar.dart';
 import 'tab_item.dart';
 import 'package:vector_math/vector_math.dart' as vector;
@@ -21,13 +22,13 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
   late Animation<double> _fadeFabOutAnimation;
   late Animation<double> _fadeFabInAnimation;
 
-  late TabController _tabController;
-
   double fabIconAlpha = 1;
   IconData nextIcon = Icons.list_outlined;
   IconData activeIcon = Icons.list_outlined;
 
-  int currentSelected = 0;
+  int currentSelected = 1;
+
+  late List<Listar> listar;
 
   @override
   void initState() {
@@ -38,9 +39,6 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
     _fadeOutController = AnimationController(
         vsync: this,
         duration: const Duration(milliseconds: (ANIM_DURATION ~/ 5)));
-
-    _tabController = TabController(vsync: this, length: 3);
-    _tabController.addListener(_tabControllerSelection);
 
     _positionTween = Tween<double>(begin: 0, end: 0);
     _positionAnimation = _positionTween.animate(
@@ -90,61 +88,41 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <TabItem>[
         TabItem(
-          selected: currentSelected == 0,
+          selected: Globais.tabSelected == 0,
           iconData: Icons.home,
           title: "Home",
-          controller: _tabController,
           callbackFunction: () {
             setState(
               () {
+                Globais.tabSelected = 0;
                 nextIcon = Icons.home;
-                currentSelected = 0;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ),
-                );
+                HomePage();
               },
             );
             _initAnimationAndStart(_positionAnimation.value, -1);
           },
         ),
         TabItem(
-            selected: currentSelected == 1,
+            selected: Globais.tabSelected == 1,
             iconData: Icons.list_outlined,
             title: "Lista",
-            controller: _tabController,
             callbackFunction: () {
               setState(() {
+                Globais.tabSelected = 1;
                 nextIcon = Icons.list_outlined;
-                currentSelected = 1;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ListarPage(
-                      listar: [],
-                    ),
-                  ),
-                );
+                ListarPage(listar);
               });
               _initAnimationAndStart(_positionAnimation.value, 0);
             }),
         TabItem(
-          selected: currentSelected == 2,
+          selected: Globais.tabSelected == 2,
           iconData: Icons.history_outlined,
           title: "Histórico",
-          controller: _tabController,
           callbackFunction: () {
             setState(() {
+              Globais.tabSelected = 2;
               nextIcon = Icons.history_outlined;
-              currentSelected = 2;
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HistoricoPage(),
-                ),
-              );
+              HistoricoPage();
             });
             _initAnimationAndStart(_positionAnimation.value, 1);
           },
@@ -164,25 +142,25 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
   }
 
   int _tabControllerSelection() {
-    if (currentSelected == 0) {
-      // _iTabSelecionada = _tabController.index;
+    if (Globais.tabSelected == 0) {
+      HomePage();
       setState(() {
         navBar();
       });
     }
-    if (currentSelected == 1) {
-      // _iTabSelecionada = _tabController.index;
+    if (Globais.tabSelected == 1) {
+      ListarPage(listar);
       setState(() {
         navBar();
       });
     }
-    if (currentSelected == 2) {
-      // _iTabSelecionada = _tabController.index;
+    if (Globais.tabSelected == 2) {
+      HistoricoPage();
       setState(() {
         navBar();
       });
     }
-    return currentSelected;
+    return Globais.tabSelected;
   }
 
   Widget navBar() {

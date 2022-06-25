@@ -9,18 +9,19 @@ import 'package:hackathon/ui/decoration/decoration.dart';
 class HomePage extends StatefulWidget {
   // const HomePage({Key? key}) : super(key: key);
 
-  final BarraNavegacao? barraNavegacao;
+  final barraNavegacao = BarraNavegacao;
 
-  const HomePage({Key? key, this.barraNavegacao}) : super(key: key);
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Listar> listar = [];
-  late TabController _tabController;
-  int _iTabSelecionada = 0;
+  List<Listar> listar = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,32 +31,33 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Cores.laranja,
       ),
       bottomNavigationBar: BarraNavegacao(),
-      body: widget.barraNavegacao == 0
-          ? Container(
-              color: Cores.cinza,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _telaHome(),
-                ],
-              ),
-            )
-          : Container(
-              child: _iTabSelecionada == 0
-                  ? _telaHome()
-                  : _iTabSelecionada == 1
-                      ? ListarPage(
-                          listar: [],
-                        )
-                      // ? ListarPage()
-                      : _iTabSelecionada == 2
-                          ? HistoricoPage()
-                          : const RespostaPage(),
-            ),
+      body: selectTab(
+        Globais.tabSelected,
+      ),
     );
   }
 
+  Widget selectTab(int index) {
+    setState(() {
+      Globais.tabSelected = index;
+    });
+    switch (index) {
+      case 0:
+        setState(() {});
+        return _telaHome();
+      case 1:
+        setState(() {});
+        return ListarPage(listar);
+      case 2:
+        setState(() {});
+        return HistoricoPage();
+      default:
+        return Container();
+    }
+  }
+
   Widget _telaHome() {
+    setState(() {});
     return Container(
       color: Cores.cinza,
       child: Column(
