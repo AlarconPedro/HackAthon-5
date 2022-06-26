@@ -19,28 +19,31 @@ class ListarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: FutureBuilder(
-              future: ApiRemote().get(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                  case ConnectionState.none:
-                    return const CirculoEspera();
-                  default:
-                    if (snapshot.hasError) {
-                      return Text(
-                          "Erro ao exigir a listagem (${snapshot.error.toString()})");
-                    } else {
-                      return listarPesquisas(snapshot.data as List<Listar>);
-                    }
-                }
-              },
+      body: Container(
+        color: Cores.cinza,
+        child: Column(
+          children: [
+            Expanded(
+              child: FutureBuilder(
+                future: ApiRemote().get(),
+                builder: (context, snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                    case ConnectionState.none:
+                      return const CirculoEspera();
+                    default:
+                      if (snapshot.hasError) {
+                        return Text(
+                            "Erro ao exigir a listagem (${snapshot.error.toString()})");
+                      } else {
+                        return listarPesquisas(snapshot.data as List<Listar>);
+                      }
+                  }
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -62,56 +65,34 @@ class ListarPage extends StatelessWidget {
               child: ListTile(
                 iconColor: Cores.preto,
                 title: Text(
-                  listaDados[index].descricao,
+                  listaDados[index].tema,
                 ),
                 subtitle: Text(
-                  listaDados[index].tema,
+                  listaDados[index].descricao,
+                ),
+                trailing: Icon(
+                  Icons.send_rounded,
+                  textDirection: TextDirection.ltr,
+                  color: Cores.preto,
                 ),
               ),
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            _abrirDetalhesClique(
+              context,
+              listaDados[index],
+            );
+          },
         );
       },
     );
   }
 }
 
-Widget listarDados() {
-  return Scrollbar(
-    child: ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: 15,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Cores.laranja,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: ListTile(
-              iconColor: Cores.preto,
-              title: Text("widget.listar[index].nome"),
-              subtitle: Text("widget.listar[index].email"),
-              trailing: IconButton(
-                icon: Icon(Icons.drive_file_rename_outline_sharp),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RespostaPage(),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        );
-      },
-    ),
-  );
+void _abrirDetalhesClique(BuildContext context, Listar listar) {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => RespostaPage(listar)));
 }
 
 Future<List<Listar>> listarDadosWeb() async {
