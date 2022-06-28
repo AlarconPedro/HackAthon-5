@@ -15,11 +15,6 @@ class _HistoricoPageState extends State<HistoricoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Textos.textoAppBar(),
-        centerTitle: true,
-        backgroundColor: Cores.laranja,
-      ),
       // bottomNavigationBar: BarraNavegacao(),
       body: Container(
         color: Cores.cinza,

@@ -19,8 +19,14 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   List<Listar> listar = [];
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,21 +45,28 @@ class _HomePageState extends State<HomePage> {
 
   Widget selectTab(int index) {
     setState(() {
-      Globais.tabSelected = index;
+      index = Globais.tabSelected;
     });
-    switch (index) {
-      case 0:
-        setState(() {});
-        return _telaHome();
-      case 1:
-        setState(() {});
-        return ListarPage(listar);
-      case 2:
-        setState(() {});
-        return HistoricoPage();
-      default:
-        return Container();
-    }
+    return index == 0
+        ? _telaHome()
+        : index == 1
+            ? ListarPage(listar)
+            : index == 2
+                ? HistoricoPage()
+                : Container();
+    // switch (index) {
+    //   case 0:
+    //     setState(() {});
+    //     return _telaHome();
+    //   case 1:
+    //     setState(() {});
+    //     return ListarPage(listar);
+    //   case 2:
+    //     setState(() {});
+    //     return HistoricoPage();
+    //   default:
+    //     return Container();
+    // }
   }
 
   Widget _telaHome() {

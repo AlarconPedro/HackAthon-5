@@ -17,6 +17,7 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
   late AnimationController _animationController;
   late Tween<double> _positionTween;
   late Animation<double> _positionAnimation;
+  late TabController _tabController;
 
   late AnimationController _fadeOutController;
   late Animation<double> _fadeFabOutAnimation;
@@ -33,6 +34,9 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
   @override
   void initState() {
     super.initState();
+
+    _tabController = TabController(vsync: this, length: 3);
+    _tabController.addListener(_tabControllerSelection);
 
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: ANIM_DURATION));
@@ -75,6 +79,7 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
 
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     return Container(
       color: Cores.cinza,
       child: navBar(),
@@ -97,6 +102,7 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
                 Globais.tabSelected = 0;
                 HomePage();
                 nextIcon = Icons.home;
+                print("passou");
               },
             );
             _initAnimationAndStart(_positionAnimation.value, -1);
@@ -145,23 +151,26 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
 
   int _tabControllerSelection() {
     if (Globais.tabSelected == 0) {
-      HomePage();
       setState(() {
+        HomePage();
         navBar();
       });
     }
     if (Globais.tabSelected == 1) {
-      ListarPage(listar);
       setState(() {
+        ListarPage(listar);
         navBar();
       });
     }
     if (Globais.tabSelected == 2) {
-      HistoricoPage();
       setState(() {
+        HistoricoPage();
         navBar();
       });
     }
+    setState(() {
+      Globais.tabSelected;
+    });
     return Globais.tabSelected;
   }
 
@@ -205,7 +214,8 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
                                 color: Cores.cinza,
                                 shape: BoxShape.circle,
                                 boxShadow: [
-                                  BoxShadow(color: Cores.laranja, blurRadius: 8)
+                                  BoxShadow(
+                                      color: Cores.laranja, blurRadius: 10)
                                 ],
                               ),
                             ),

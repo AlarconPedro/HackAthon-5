@@ -57,6 +57,20 @@ class ApiRemote {
     );
   }
 
+  Future<List<Listar>?> listarHistorico() async {
+    final _linkListarHistorico = Globais.linkListarHistorico;
+    final response = http.get(
+      Uri.parse(_linkListarHistorico),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Autorization':
+            'bearer ${Globais.token}', // O token é obtido no loginPost().
+      },
+    );
+    final tokeDescript = await jwtDecoder(Globais.token);
+    return recuperaDadosToken(tokeDescript);
+  }
+
   Future<http.Response> listarDadosWeb() async {
     final _linkListar = Globais.linkGetListarJWT;
     final response = await http.get(
@@ -75,8 +89,7 @@ class ApiRemote {
     return decodedToken;
   }
 
-  List<Listar> recuperaDadosToken(Map<String, dynamic> mapa) {
-    final List<Listar> listar = [];
+  List<Listar>? recuperaDadosToken(Map<String, dynamic> mapa) {
     for (var i = 0; i < mapa.length; i++) {
       final Listar listar = Listar(
         id_pesquisa: mapa[i]['id_pesquisa'],

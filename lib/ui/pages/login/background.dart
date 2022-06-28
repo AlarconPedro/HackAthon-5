@@ -42,7 +42,7 @@ class Curved extends CustomPainter {
       colors: [
         // Color(0xfff8a55f),
         // Color(0xfff1665f),
-        Cores.azul,
+        Cores.laranjaClaro,
         Cores.laranja,
       ],
     ).createShader(rect);

@@ -3,6 +3,7 @@ import 'package:hackathon/classes/classes.dart';
 import 'package:hackathon/datasources/api.dart';
 import 'package:hackathon/datasources/models/listar.dart';
 import 'package:hackathon/ui/components/components.dart';
+import 'package:hackathon/ui/decoration/decoration.dart';
 import 'package:hackathon/ui/pages/home_page.dart';
 import 'package:hackathon/ui/pages/listar_page.dart';
 import 'package:hackathon/ui/pages/login/login.dart';
@@ -72,18 +73,42 @@ class _LoginFormState extends State<LoginForm> {
     final loginPage = ApiRemote(email: usuario.text, password: senha.text);
     if (usuario != null || senha != null) {
       final response = await loginPage.loginPost();
-      // print(loginPage.post());
       if (response.statusCode == 200) {
-        // print(response.body);
         Globais.token = response.body;
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
             builder: (context) => const HomePage(),
           ),
         );
+      } else {
+        usuario.text = "";
+        senha.text = "";
+        showDialog(
+            context: context, builder: (BuildContext context) => alerta());
       }
-      return usuario.text = "Erro";
     }
     return Globais.token;
+  }
+
+  AlertDialog alerta() {
+    return AlertDialog(
+      title: const Text("Usuário ou senha inválido !"),
+      content: const Text("Por favor digite um usuário e senha válidos."),
+      actions: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Cores.laranja,
+            shadowColor: Cores.laranja,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text("OK"),
+        ),
+      ],
+    );
   }
 }

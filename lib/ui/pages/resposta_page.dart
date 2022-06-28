@@ -89,12 +89,43 @@ class _RespostaPageState extends State<RespostaPage> {
     final response = await enviarResposta.enviaResposta(controllerResposta1,
         controllerResposta2, controllerResposta3, widget.listar.id_pesquisa);
     if (response.statusCode == 200) {
-      print("foiiii");
-      Navigator.of(context).pop();
-      return response.body;
-    } else {
+      controllerResposta1.text.isEmpty
+          ? showDialog(
+              context: context, builder: (BuildContext context) => alerta())
+          : controllerResposta2.text.isEmpty
+              ? showDialog(
+                  context: context, builder: (BuildContext context) => alerta())
+              : controllerResposta3.text.isEmpty
+                  ? showDialog(
+                      context: context,
+                      builder: (BuildContext context) => alerta())
+                  : Navigator.of(context).pop();
       return response.body;
     }
+    return response.body;
+  }
+
+  AlertDialog alerta() {
+    return AlertDialog(
+      title: const Text("Resposta inválida !"),
+      content: const Text(
+          "Por favor certifique-se de preencher todos os campos da pesquisa."),
+      actions: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Cores.laranja,
+            shadowColor: Cores.laranja,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text("OK"),
+        ),
+      ],
+    );
   }
 
   Widget pergunta3() {
