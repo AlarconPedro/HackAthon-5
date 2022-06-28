@@ -95,8 +95,8 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
             setState(
               () {
                 Globais.tabSelected = 0;
-                nextIcon = Icons.home;
                 HomePage();
+                nextIcon = Icons.home;
               },
             );
             _initAnimationAndStart(_positionAnimation.value, -1);
@@ -107,11 +107,13 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
             iconData: Icons.list_outlined,
             title: "Lista",
             callbackFunction: () {
-              setState(() {
-                Globais.tabSelected = 1;
-                nextIcon = Icons.list_outlined;
-                ListarPage(listar);
-              });
+              setState(
+                () {
+                  Globais.tabSelected = 1;
+                  ListarPage(listar);
+                  nextIcon = Icons.list_outlined;
+                },
+              );
               _initAnimationAndStart(_positionAnimation.value, 0);
             }),
         TabItem(
@@ -121,8 +123,8 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
           callbackFunction: () {
             setState(() {
               Globais.tabSelected = 2;
-              nextIcon = Icons.history_outlined;
               HistoricoPage();
+              nextIcon = Icons.history_outlined;
             });
             _initAnimationAndStart(_positionAnimation.value, 1);
           },
@@ -212,11 +214,12 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
                       ),
                     ),
                     SizedBox(
-                        height: 70,
-                        width: 90,
-                        child: CustomPaint(
-                          painter: HalfPainter(),
-                        )),
+                      height: 70,
+                      width: 90,
+                      child: CustomPaint(
+                        painter: HalfPainter(),
+                      ),
+                    ),
                     SizedBox(
                       height: 60,
                       width: 60,

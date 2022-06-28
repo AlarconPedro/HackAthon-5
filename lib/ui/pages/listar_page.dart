@@ -25,7 +25,7 @@ class ListarPage extends StatelessWidget {
           children: [
             Expanded(
               child: FutureBuilder(
-                future: ApiRemote().get(),
+                future: ApiRemote().listarPesquisasCliente(),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
@@ -58,11 +58,16 @@ class ListarPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
             child: Container(
+              alignment: Alignment.centerLeft,
+              height: 75,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Cores.laranja,
               ),
               child: ListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 iconColor: Cores.preto,
                 title: Text(
                   listaDados[index].tema,
@@ -95,20 +100,19 @@ void _abrirDetalhesClique(BuildContext context, Listar listar) {
       context, MaterialPageRoute(builder: (context) => RespostaPage(listar)));
 }
 
-Future<List<Listar>> listarDadosWeb() async {
-  final listPage = ApiRemote(token: Globais.token);
-  final response = await listPage.listarDadosWeb();
-  print(response);
-  if (response.statusCode == 200) {
-    List itensList = jsonDecode(response.body);
-    print('passou aqui');
-    List<Listar> listar = [];
-    for (var itensMap in itensList) {
-      listar.add(Listar.fromJson(itensMap));
-    }
+// Future<List<Listar>> listarDadosWeb() async {
+//   final listPage = ApiRemote(token: Globais.token);
+//   final response = await listPage.listarDadosWeb();
+//   print(response);
+//   if (response.statusCode == 200) {
+//     List itensList = jsonDecode(response.body);
+//     List<Listar> listar = [];
+//     for (var itensMap in itensList) {
+//       listar.add(Listar.fromJson(itensMap));
+//     }
 
-    return listar;
-  } else {
-    throw Exception('Failed to load themes');
-  }
-}
+//     return listar;
+//   } else {
+//     throw Exception('Failed to load themes');
+//   }
+// }

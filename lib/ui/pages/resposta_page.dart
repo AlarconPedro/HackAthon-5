@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon/classes/classes.dart';
+import 'package:hackathon/datasources/api.dart';
 import 'package:hackathon/datasources/models/listar.dart';
 import 'package:hackathon/ui/components/components.dart';
 import 'package:hackathon/ui/decoration/decoration.dart';
 
 class RespostaPage extends StatefulWidget {
   final Listar listar;
-  const RespostaPage(this.listar, {Key? key}) : super(key: key);
+  const RespostaPage(
+    this.listar, {
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<RespostaPage> createState() => _RespostaPageState();
@@ -17,6 +21,11 @@ class _RespostaPageState extends State<RespostaPage> {
   String p2 = "";
   String p3 = "";
   List<String> listaPerguntas = [];
+
+  final TextEditingController controllerResposta1 = TextEditingController();
+  final TextEditingController controllerResposta2 = TextEditingController();
+  final TextEditingController controllerResposta3 = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     String teste = widget.listar.perguntas;
@@ -42,10 +51,50 @@ class _RespostaPageState extends State<RespostaPage> {
             pergunta1(),
             pergunta2(),
             pergunta3(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child: Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Cores.laranja,
+                      shadowColor: Cores.laranja,
+                      fixedSize: const Size(150, 45),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () {
+                      resposta();
+                    },
+                    child: const Text(
+                      "Enviar Resposta",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
     );
+  }
+
+  Future<String> resposta() async {
+    final enviarResposta = ApiRemote();
+    final response = await enviarResposta.enviaResposta(controllerResposta1,
+        controllerResposta2, controllerResposta3, widget.listar.id_pesquisa);
+    if (response.statusCode == 200) {
+      print("foiiii");
+      Navigator.of(context).pop();
+      return response.body;
+    } else {
+      return response.body;
+    }
   }
 
   Widget pergunta3() {
@@ -77,19 +126,13 @@ class _RespostaPageState extends State<RespostaPage> {
                 ),
                 child: ListTile(
                   iconColor: Cores.preto,
-                  title: Text(widget.listar.tema),
-                  subtitle: Text(
+                  title: Text(
                     listaPerguntas[2],
                   ),
-                  // trailing: Icon(
-                  //   Icons.send_rounded,
-                  //   textDirection: TextDirection.ltr,
-                  //   color: Cores.preto,
-                  // ),
                 ),
               ),
             ),
-            InputText.respostaPesquisa(),
+            InputText.respostaPesquisa(controllerResposta3),
           ],
         ),
         shadowColor: Cores.laranja,
@@ -130,20 +173,12 @@ class _RespostaPageState extends State<RespostaPage> {
                 child: ListTile(
                   iconColor: Cores.preto,
                   title: Text(
-                    widget.listar.tema,
-                  ),
-                  subtitle: Text(
                     listaPerguntas[1],
                   ),
-                  // trailing: Icon(
-                  //   Icons.send_rounded,
-                  //   textDirection: TextDirection.ltr,
-                  //   color: Cores.preto,
-                  // ),
                 ),
               ),
             ),
-            InputText.respostaPesquisa(),
+            InputText.respostaPesquisa(controllerResposta2),
           ],
         ),
         shadowColor: Cores.laranja,
@@ -186,18 +221,10 @@ class _RespostaPageState extends State<RespostaPage> {
                   title: Text(
                     listaPerguntas[0],
                   ),
-                  subtitle: Text(
-                    widget.listar.tema,
-                  ),
-                  // trailing: Icon(
-                  //   Icons.send_rounded,
-                  //   textDirection: TextDirection.ltr,
-                  //   color: Cores.preto,
-                  // ),
                 ),
               ),
             ),
-            InputText.respostaPesquisa(),
+            InputText.respostaPesquisa(controllerResposta1),
           ],
         ),
         shadowColor: Cores.laranja,

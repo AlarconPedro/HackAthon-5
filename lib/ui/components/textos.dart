@@ -27,7 +27,7 @@ class Textos {
   static Card detalhesText() {
     final TextEditingController controller;
     return Card(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -52,10 +52,10 @@ class Textos {
               ),
               child: ListTile(
                 iconColor: Cores.preto,
-                title: Text(
+                title: const Text(
                   "listaDados[index].descricao, listaDados[index].tema, ",
                 ),
-                subtitle: Text(
+                subtitle: const Text(
                   "listaDados[index].tema",
                 ),
                 // trailing: Icon(
@@ -66,7 +66,7 @@ class Textos {
               ),
             ),
           ),
-          InputText.respostaPesquisa(),
+          InputText.respostaPesquisa(TextEditingController()),
         ],
       ),
       shadowColor: Cores.laranja,

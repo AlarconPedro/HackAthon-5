@@ -56,7 +56,7 @@ class InputText {
     );
   }
 
-  static Widget respostaPesquisa() {
+  static Widget respostaPesquisa(TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -64,12 +64,13 @@ class InputText {
           borderRadius: BorderRadius.circular(10),
         ),
         margin: const EdgeInsets.only(left: 16, right: 32),
-        child: const TextField(
-          decoration: InputDecoration(
+        child: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
             hintStyle: TextStyle(fontSize: 20),
             border: InputBorder.none,
             icon: Icon(Icons.search_rounded),
-            hintText: "Digite sua pesquisa",
+            hintText: "Digite sua resposta",
           ),
           autofocus: false,
           maxLines: null,
