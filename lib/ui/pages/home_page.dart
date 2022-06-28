@@ -19,14 +19,32 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
-  List<Listar> listar = [];
-  late TabController _tabController;
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
+  static const List<Widget> _pages = <Widget>[
+    Icon(
+      Icons.home,
+      size: 250,
+    ),
+    Icon(
+      Icons.list_outlined,
+      size: 250,
+    ),
+    Icon(
+      Icons.history_outlined,
+      size: 250,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
+
+  List<Listar> listar = [];
+  final BarraNavegacao barraNavegacao = BarraNavegacao();
 
   @override
   Widget build(BuildContext context) {
@@ -36,37 +54,54 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         centerTitle: true,
         backgroundColor: Cores.laranja,
       ),
-      bottomNavigationBar: BarraNavegacao(),
-      body: selectTab(
-        Globais.tabSelected,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Cores.laranja,
+              blurRadius: 5,
+              spreadRadius: 1,
+              offset: const Offset(2, -2),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.shifting,
+          backgroundColor: Cores.branco,
+          iconSize: 35,
+          selectedItemColor: Cores.laranja,
+          unselectedItemColor: Cores.preto,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list_outlined),
+              label: 'Listar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_outlined),
+              label: 'Histórico',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
       ),
+      body: _selectedIndex == 0
+          ? _telaHome()
+          : _selectedIndex == 1
+              ? ListarPage(listar)
+              : _selectedIndex == 2
+                  ? const HistoricoPage()
+                  : Container(),
     );
   }
 
-  Widget selectTab(int index) {
-    setState(() {
-      index = Globais.tabSelected;
-    });
-    return index == 0
-        ? _telaHome()
-        : index == 1
-            ? ListarPage(listar)
-            : index == 2
-                ? HistoricoPage()
-                : Container();
-    // switch (index) {
-    //   case 0:
-    //     setState(() {});
-    //     return _telaHome();
-    //   case 1:
-    //     setState(() {});
-    //     return ListarPage(listar);
-    //   case 2:
-    //     setState(() {});
-    //     return HistoricoPage();
-    //   default:
-    //     return Container();
-    // }
+  static int selecionaTela(int index) {
+    index = Globais.tabSelected;
+    return index;
   }
 
   Widget _telaHome() {

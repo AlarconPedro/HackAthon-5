@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hackathon/classes/classes.dart';
+import 'package:hackathon/classes/globais.dart';
+import 'package:hackathon/datasources/models/historico.dart';
 import 'package:hackathon/datasources/models/listar.dart';
 import 'package:http/http.dart' as http;
 import 'package:hackathon/datasources/datasource.dart';
@@ -57,66 +59,70 @@ class ApiRemote {
     );
   }
 
-  Future<List<Listar>?> listarHistorico() async {
-    final _linkListarHistorico = Globais.linkListarHistorico;
-    final response = http.get(
-      Uri.parse(_linkListarHistorico),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Autorization':
-            'bearer ${Globais.token}', // O token é obtido no loginPost().
-      },
-    );
-    final tokeDescript = await jwtDecoder(Globais.token);
-    return recuperaDadosToken(tokeDescript);
-  }
+  // Future<List<Historico>> listarHistorico_old() async {
+  //   const _linkListarHistorico =
+  //       "http://187.87.223.235:8000/api/v1/respostasPorPessoa/5";
+  //   final response = await http.get(
+  //     Uri.parse(_linkListarHistorico),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //       'Autorization':
+  //           'bearer ${Globais.token}', // O token é obtido no loginPost().
+  //     },
+  //   );
+  //   return (json.decode(response.body) as List)
+  //       .map((e) => Historico.fromJson(e))
+  //       .toList();
+  //   // final tokeDescript = await jwtDecoder(Globais.token);
+  //   // return recuperaDadosToken(tokeDescript);
+  // }
 
-  Future<http.Response> listarDadosWeb() async {
-    final _linkListar = Globais.linkGetListarJWT;
-    final response = await http.get(
-      Uri.parse(_linkListar),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
-    return response;
-  }
+  // Future<http.Response> listarDadosWeb() async {
+  //   final _linkListar = Globais.linkGetListarJWT;
+  //   final response = await http.get(
+  //     Uri.parse(_linkListar),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Accept': 'application/json',
+  //       'Authorization': 'Bearer $token',
+  //     },
+  //   );
+  //   return response;
+  // }
 
-  Future<Map<String, dynamic>> jwtDecoder(String token) async {
-    final decodedToken = JwtDecoder.decode(token);
-    return decodedToken;
-  }
+  // Future<Map<String, dynamic>> jwtDecoder(String token) async {
+  //   final decodedToken = JwtDecoder.decode(token);
+  //   return decodedToken;
+  // }
 
-  List<Listar>? recuperaDadosToken(Map<String, dynamic> mapa) {
-    for (var i = 0; i < mapa.length; i++) {
-      final Listar listar = Listar(
-        id_pesquisa: mapa[i]['id_pesquisa'],
-        id_pessoa: mapa[i]['id_pessoa'],
-        descricao: mapa[i]['descricao'],
-        perguntas: mapa[i]['perguntas'],
-        status: mapa[i]['status'],
-        tema: mapa[i]['tema'],
-      );
-      listar.add(listar);
-    }
-    return listar;
-  }
+  // List<Listar>? recuperaDadosToken(Map<String, dynamic> mapa) {
+  //   for (var i = 0; i < mapa.length; i++) {
+  //     final Listar listar = Listar(
+  //       id_pesquisa: mapa[i]['id_pesquisa'],
+  //       id_pessoa: mapa[i]['id_pessoa'],
+  //       descricao: mapa[i]['descricao'],
+  //       perguntas: mapa[i]['perguntas'],
+  //       status: mapa[i]['status'],
+  //       tema: mapa[i]['tema'],
+  //     );
+  //     listar.add(listar);
+  //   }
+  //   return listar;
+  // }
 
   // Efetua uma requisição GET para a API para listar as Pesquisas de Satisfação, retorna o Token.
-  Future<http.Response> listarGet() async {
-    final _linkListar = Globais.linkGetListar;
+  // Future<http.Response> listarGet() async {
+  //   final _linkListar = Globais.linkGetListar;
 
-    final content = await http.get(
-      Uri.parse(_linkListar),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Autorization': 'bearer $token',
-      },
-    );
-    return content;
-  }
+  //   final content = await http.get(
+  //     Uri.parse(_linkListar),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //       'Autorization': 'bearer $token',
+  //     },
+  //   );
+  //   return content;
+  // }
 
   Future<List<Listar>> listarPesquisasCliente() async {
     final _linkListar = Globais.linkGetListar;
@@ -130,6 +136,22 @@ class ApiRemote {
     );
     return (json.decode(response.body) as List)
         .map((e) => Listar.fromJson(e))
+        .toList();
+  }
+
+  Future<List<Historico>> listarHistorico() async {
+    final _linkListar =
+        "http://187.87.223.235:8000/api/v1/respostasPorPessoa/39";
+    final response = await http.get(
+      Uri.parse(_linkListar),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${Globais.token}',
+      },
+    );
+    return (json.decode(response.body) as List)
+        .map((e) => Historico.fromJson(e))
         .toList();
   }
 

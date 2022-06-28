@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon/classes/classes.dart';
 import 'package:hackathon/datasources/datasource.dart';
+import 'package:hackathon/datasources/models/historico.dart';
 import 'package:hackathon/datasources/models/listar.dart';
 import 'package:hackathon/ui/components/components.dart';
 import 'package:hackathon/ui/decoration/decoration.dart';
@@ -23,7 +24,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
           children: [
             Expanded(
               child: FutureBuilder(
-                future: ApiRemote().listarPesquisasCliente(),
+                future: ApiRemote().listarHistorico(),
                 builder: (context, snapshot) {
                   switch (snapshot.connectionState) {
                     case ConnectionState.waiting:
@@ -34,7 +35,8 @@ class _HistoricoPageState extends State<HistoricoPage> {
                         return Text(
                             "Erro ao exigir a listagem (${snapshot.error.toString()})");
                       } else {
-                        return listarPesquisas(snapshot.data as List<Listar>);
+                        return listarHistorico(
+                            snapshot.data as List<Historico>);
                       }
                   }
                 },
@@ -46,7 +48,7 @@ class _HistoricoPageState extends State<HistoricoPage> {
     );
   }
 
-  Widget listarPesquisas(List<Listar> listaDados) {
+  Widget listarHistorico(List<Historico> listaDados) {
     return ListView.builder(
       padding: const EdgeInsets.all(8),
       scrollDirection: Axis.vertical,
@@ -68,15 +70,21 @@ class _HistoricoPageState extends State<HistoricoPage> {
                 ),
                 iconColor: Cores.preto,
                 title: Text(
-                  listaDados[index].tema,
+                  listaDados[index].tema_pesquisa,
+                  style: TextStyle(
+                    color: Cores.laranja,
+                  ),
                 ),
                 subtitle: Text(
-                  listaDados[index].descricao,
+                  listaDados[index].nome_pessoa,
+                  style: TextStyle(
+                    color: Cores.branco,
+                  ),
                 ),
                 trailing: Icon(
                   Icons.check_rounded,
                   textDirection: TextDirection.ltr,
-                  color: Cores.branco,
+                  color: Cores.laranja,
                 ),
               ),
             ),
@@ -86,28 +94,3 @@ class _HistoricoPageState extends State<HistoricoPage> {
     );
   }
 }
-  // bottomNavigationBar: BarraNavegacao(),
-  // body: Container(
-  //   color: Cores.cinza,
-  //   child: SizedBox(
-  //     child: ListView(
-  //       padding: const EdgeInsets.all(10),
-  //       children: [
-  //         Container(
-  //           padding: const EdgeInsets.all(10),
-  //           decoration: BoxDecoration(
-  //             color: Cores.verde,
-  //             borderRadius: BorderRadius.circular(10),
-  //           ),
-  //           child: ListTile(
-  //             leading: const Icon(Icons.home),
-  //             title: const Text("Home"),
-  //             onTap: () {
-  //               Globais.tabSelected = 0;
-  //             },
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   ),
-  // ),

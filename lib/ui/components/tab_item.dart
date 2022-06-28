@@ -93,6 +93,7 @@ class _TabItemState extends State<TabItem> {
                     color: Cores.laranja,
                   ),
                   onPressed: () {
+                    setState(() {});
                     widget.callbackFunction();
                   },
                 ),

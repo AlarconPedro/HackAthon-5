@@ -14,6 +14,7 @@ class BarraNavegacao extends StatefulWidget {
 
 class _BarraNavegacaoState extends State<BarraNavegacao>
     with TickerProviderStateMixin {
+  final mudarTela = HomePage;
   late AnimationController _animationController;
   late Tween<double> _positionTween;
   late Animation<double> _positionAnimation;
@@ -34,9 +35,6 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
   @override
   void initState() {
     super.initState();
-
-    _tabController = TabController(vsync: this, length: 3);
-    _tabController.addListener(_tabControllerSelection);
 
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: ANIM_DURATION));
@@ -99,10 +97,11 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
           callbackFunction: () {
             setState(
               () {
-                Globais.tabSelected = 0;
-                HomePage();
-                nextIcon = Icons.home;
-                print("passou");
+                if (Globais.tabSelected == 0) {
+                  HomePage();
+                  nextIcon = Icons.home;
+                }
+                // Globais.mudaTela(listar);
               },
             );
             _initAnimationAndStart(_positionAnimation.value, -1);
@@ -118,6 +117,7 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
                   Globais.tabSelected = 1;
                   ListarPage(listar);
                   nextIcon = Icons.list_outlined;
+                  // Globais.mudaTela(listar);
                 },
               );
               _initAnimationAndStart(_positionAnimation.value, 0);
@@ -129,9 +129,10 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
           callbackFunction: () {
             setState(() {
               Globais.tabSelected = 2;
-              HistoricoPage();
               nextIcon = Icons.history_outlined;
+              // Globais.mudaTela(listar);
             });
+
             _initAnimationAndStart(_positionAnimation.value, 1);
           },
         ),
@@ -147,31 +148,6 @@ class _BarraNavegacaoState extends State<BarraNavegacao>
     _fadeOutController.reset();
     _animationController.forward();
     _fadeOutController.forward();
-  }
-
-  int _tabControllerSelection() {
-    if (Globais.tabSelected == 0) {
-      setState(() {
-        HomePage();
-        navBar();
-      });
-    }
-    if (Globais.tabSelected == 1) {
-      setState(() {
-        ListarPage(listar);
-        navBar();
-      });
-    }
-    if (Globais.tabSelected == 2) {
-      setState(() {
-        HistoricoPage();
-        navBar();
-      });
-    }
-    setState(() {
-      Globais.tabSelected;
-    });
-    return Globais.tabSelected;
   }
 
   Widget navBar() {
